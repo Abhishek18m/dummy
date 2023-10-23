@@ -13,6 +13,7 @@ import CommonButton from '../Component/CommonButton';
 import Eneum from '../Element/Eneum/Eneum';
 import {ref, onValue, push, update, remove} from 'firebase/database';
 import {db} from '../Firebase/firebase-config';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Login = ({navigation}) => {
   const [security, setSecurity] = useState(true);
@@ -45,6 +46,7 @@ const Login = ({navigation}) => {
     } else {
       if (res[0].email == email.toLowerCase() && res[0].password == password) {
         navigation.navigate('HomeScreen');
+        AsyncStorage.setItem('status', 'true');
       } else {
         Alert.alert('Password doesnt match');
       }

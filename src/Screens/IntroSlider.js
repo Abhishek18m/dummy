@@ -1,6 +1,7 @@
 import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import AppIntroSlider from 'react-native-app-intro-slider';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const IntroSlider = ({navigation}) => {
   const slides = [
@@ -81,9 +82,15 @@ const IntroSlider = ({navigation}) => {
     <AppIntroSlider
       data={slides}
       renderItem={renderItem}
-      onDone={() => navigation.navigate('Login')}
+      onDone={() => [
+        AsyncStorage.setItem('introStatus', 'true'),
+        navigation.navigate('Login'),
+      ]}
       showSkipButton={true}
-      onSkip={() => navigation.navigate('Login')}
+      onSkip={() => [
+        AsyncStorage.setItem('introStatus', 'true'),
+        navigation.navigate('Login'),
+      ]}
     />
   );
 };

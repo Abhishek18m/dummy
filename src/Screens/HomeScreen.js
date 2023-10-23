@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import React, {useRef, useState} from 'react';
 import {ref} from 'firebase/database';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const HomeScreen = ({navigation}) => {
   const [search, setSearch] = useState(false);
@@ -58,7 +59,11 @@ const HomeScreen = ({navigation}) => {
           }}>
           <View style={{width: 45}}></View>
           <Text style={{fontWeight: 'bold', fontSize: 22}}>Messages</Text>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => [
+              AsyncStorage.setItem('status', 'false'),
+              navigation.navigate('Login'),
+            ]}>
             <Text>Logout</Text>
           </TouchableOpacity>
         </View>
