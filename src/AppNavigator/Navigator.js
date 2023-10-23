@@ -8,6 +8,7 @@ import IntroSlider from '../Screens/IntroSlider';
 import HomeScreen from '../Screens/HomeScreen';
 import Login from '../Screens/Login';
 import SignUp from '../Screens/SignUp';
+import ChatScreen from '../Screens/ChatScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,11 @@ function Navigator() {
         <Stack.Screen
           name="SignUp"
           component={SignUp}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ChatScreen"
+          component={ChatScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

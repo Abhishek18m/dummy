@@ -1,12 +1,82 @@
-import {View, Text, SafeAreaView, TouchableOpacity, Image} from 'react-native';
-import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ref, onValue, push, update, remove} from 'firebase/database';
+import {db} from '../Firebase/firebase-config';
+
 import CommonInput from '../Component/CommonInput';
 import InputPswrd from '../Component/InputPswrd';
 import CommonButton from '../Component/CommonButton';
 
 const SignUp = ({navigation}) => {
+  const [user, setUser] = useState([]);
   const [security, setSecurity] = useState(true);
   const [security2, setSecurity2] = useState(true);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
+  const [num, setNum] = useState('');
+  const [cPass, setCPass] = useState('');
+
+  useEffect(() => {
+    let arr = [];
+    onValue(ref(db, '/UserDetails'), querySnapShot => {
+      querySnapShot.forEach(item => {
+        let obj = item.val();
+        obj.id = item.key;
+        arr.push(obj);
+      });
+    });
+    setUser(arr);
+  }, []);
+
+  const Validate = () => {
+    if (name.length < 3) {
+      if (!name) {
+        Alert.alert('Please enter name');
+      } else {
+        Alert.alert('Name must have more than 3 char');
+      }
+    } else if (!email) {
+      Alert.alert('Please fill email');
+    } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      Alert.alert('Please enter a valid email');
+    } else if (num.length < 10) {
+      if (!num) {
+        Alert.alert('Please fill number');
+      } else {
+        Alert.alert('Number must have more than 10 digits');
+      }
+    } else if (!pass) {
+      Alert.alert('Please fill password');
+    } else if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/.test(
+        pass,
+      )
+    ) {
+      Alert.alert('Please create strong password');
+    } else if (cPass !== pass) {
+      Alert.alert('Confirm password doesnt match with password');
+    } else if (user.some(el => el.email === email.toLowerCase()) === true) {
+      Alert.alert('Email already registered ');
+    } else {
+      push(ref(db, '/UserDetails'), {
+        name: name,
+        email: email.toLowerCase(),
+        phone: num,
+        password: pass,
+      });
+      Alert.alert('Account created succesfully');
+      navigation.navigate('Login');
+    }
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View
@@ -34,14 +104,19 @@ const SignUp = ({navigation}) => {
           <CommonInput
             img={require('../Assets/Images/user.png')}
             title="Your Name"
+            text={a => setName(a)}
           />
           <CommonInput
             img={require('../Assets/Images/mail.png')}
-            title="Password"
+            title="Email Address"
+            text={a => setEmail(a)}
           />
           <CommonInput
             img={require('../Assets/Images/phone.png')}
             title="Phone Number"
+            text={a => setNum(a)}
+            length={10}
+            type="numeric"
           />
           <InputPswrd
             img={require('../Assets/Images/padlock.png')}
@@ -53,6 +128,7 @@ const SignUp = ({navigation}) => {
             }
             security={security}
             Click={() => setSecurity(!security)}
+            text={a => setPass(a)}
           />
           <InputPswrd
             img={require('../Assets/Images/padlock.png')}
@@ -64,8 +140,10 @@ const SignUp = ({navigation}) => {
             }
             security={security2}
             Click={() => setSecurity2(!security2)}
+            text={a => setCPass(a)}
           />
         </View>
+
         {/* <View
           style={{
             flexDirection: 'row',
@@ -89,7 +167,7 @@ const SignUp = ({navigation}) => {
             />
           </TouchableOpacity>
         </View> */}
-        <CommonButton title="Create" />
+        <CommonButton title="Create" click={() => Validate()} />
         <View></View>
         {/* <View>
           <Text style={{textAlign: 'center'}}>

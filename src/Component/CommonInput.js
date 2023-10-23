@@ -31,6 +31,9 @@ const CommonInput = props => {
         autoCorrect={false}
         placeholder={props.title}
         style={{paddingHorizontal: 15}}
+        onChangeText={a => props.text(a)}
+        maxLength={props.length}
+        inputMode={props.type}
       />
     </View>
   );

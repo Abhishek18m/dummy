@@ -1,12 +1,55 @@
-import {View, Text, SafeAreaView, TouchableOpacity, Image} from 'react-native';
-import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import CommonInput from '../Component/CommonInput';
 import InputPswrd from '../Component/InputPswrd';
 import CommonButton from '../Component/CommonButton';
 import Eneum from '../Element/Eneum/Eneum';
+import {ref, onValue, push, update, remove} from 'firebase/database';
+import {db} from '../Firebase/firebase-config';
 
 const Login = ({navigation}) => {
   const [security, setSecurity] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    let arr = [];
+    onValue(ref(db, '/UserDetails'), querySnapShot => {
+      querySnapShot.forEach(item => {
+        let obj = item.val();
+        obj.id = item.key;
+        arr.push(obj);
+      });
+      setUser(arr);
+    });
+  }, []);
+
+  const validate = () => {
+    let res = user
+      .filter(item => item.email == email.toLowerCase())
+      .map(({email, password}) => ({
+        email,
+        password,
+      }));
+
+    if (res.length == 0) {
+      Alert.alert("email doesn't exist");
+    } else {
+      if (res[0].email == email.toLowerCase() && res[0].password == password) {
+        navigation.navigate('HomeScreen');
+      } else {
+        Alert.alert('Password doesnt match');
+      }
+    }
+  };
 
   return (
     <SafeAreaView
@@ -41,6 +84,7 @@ const Login = ({navigation}) => {
           <CommonInput
             img={require('../Assets/Images/mail.png')}
             title="Email"
+            text={a => setEmail(a)}
           />
 
           <InputPswrd
@@ -53,6 +97,7 @@ const Login = ({navigation}) => {
             }
             security={security}
             Click={() => setSecurity(!security)}
+            text={a => setPassword(a)}
           />
           {/* <TouchableOpacity>
             <Text style={{color: 'grey', textAlign: 'right'}}>
@@ -84,10 +129,7 @@ const Login = ({navigation}) => {
             />
           </TouchableOpacity>
         </View> */}
-        <CommonButton
-          title="Sign In"
-          click={() => navigation.navigate('HomeScreen')}
-        />
+        <CommonButton title="Sign In" click={() => validate()} />
 
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Text>Don't have any account ?</Text>

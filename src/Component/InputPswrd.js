@@ -29,11 +29,12 @@ const InputPswrd = props => {
           style={{height: 25, width: 25, tintColor: 'grey'}}
         />
         <TextInput
-          autoCapitalize={false}
+          autoCapitalize="none"
           secureTextEntry={props.security}
           autoCorrect={false}
           placeholder={props.title}
           style={{paddingHorizontal: 15}}
+          onChangeText={a => props.text(a)}
         />
       </View>
       <TouchableOpacity onPress={() => props.Click()}>

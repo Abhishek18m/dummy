@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import {ref, onValue, push, update, remove} from 'firebase/database';
-// import {db} from '../Firebase/firebase-config/firebase-config.js';
 import {db} from '../Firebase/firebase-config';
 
 const Firebase = () => {
