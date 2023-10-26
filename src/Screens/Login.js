@@ -1,19 +1,15 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  Image,
-  Alert,
-} from 'react-native';
+import {View, Text, SafeAreaView, TouchableOpacity, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
+
+import {ref, onValue, push, update, remove} from 'firebase/database';
+import {db} from '../Firebase/firebase-config';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import CommonInput from '../Component/CommonInput';
 import InputPswrd from '../Component/InputPswrd';
 import CommonButton from '../Component/CommonButton';
 import Eneum from '../Element/Eneum/Eneum';
-import {ref, onValue, push, update, remove} from 'firebase/database';
-import {db} from '../Firebase/firebase-config';
-import AsyncStorage from '@react-native-community/async-storage';
+import StyleSheet from '../StyleSheet/StyleSheet';
 
 const Login = ({navigation}) => {
   const [security, setSecurity] = useState(true);
@@ -36,9 +32,11 @@ const Login = ({navigation}) => {
   const validate = () => {
     let res = user
       .filter(item => item.email == email.toLowerCase())
-      .map(({email, password}) => ({
+      .map(({email, password, id, name}) => ({
         email,
         password,
+        id,
+        name,
       }));
 
     if (res.length == 0) {
@@ -47,6 +45,7 @@ const Login = ({navigation}) => {
       if (res[0].email == email.toLowerCase() && res[0].password == password) {
         navigation.navigate('HomeScreen');
         AsyncStorage.setItem('status', 'true');
+        AsyncStorage.setItem('userLogin', JSON.stringify(res[0]));
       } else {
         Alert.alert('Password doesnt match');
       }
@@ -54,35 +53,14 @@ const Login = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: '#F5F5F5',
-      }}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'space-around',
-          paddingHorizontal: 15,
-        }}>
-        <View
-          style={{
-            // backgroundColor: 'red',
-            height: '20%',
-            alignItems: 'center',
-          }}>
-          <Text style={{fontSize: 100, fontWeight: 'bold', color: 'blue'}}>
-            {Eneum.AppName}
-          </Text>
-          <Text style={{fontSize: 22}}>Sign in to your account</Text>
+    <SafeAreaView style={StyleSheet.loginSafeView}>
+      <View style={StyleSheet.loginMainView}>
+        <View style={StyleSheet.loginHeaderView}>
+          <Text style={StyleSheet.loginHeadText}>{Eneum.AppName}</Text>
+          <Text style={StyleSheet.loginHeadText2}>Sign in to your account</Text>
         </View>
 
-        <View
-          style={{
-            height: 170,
-            // backgroundColor: 'blue',
-            justifyContent: 'space-evenly',
-          }}>
+        <View style={StyleSheet.loginInputView}>
           <CommonInput
             img={require('../Assets/Images/mail.png')}
             title="Email"
@@ -133,7 +111,7 @@ const Login = ({navigation}) => {
         </View> */}
         <CommonButton title="Sign In" click={() => validate()} />
 
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+        <View style={StyleSheet.loginCreateView}>
           <Text>Don't have any account ?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
             <Text style={{color: 'blue'}}>Create</Text>

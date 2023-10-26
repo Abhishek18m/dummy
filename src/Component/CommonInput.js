@@ -34,6 +34,7 @@ const CommonInput = props => {
         onChangeText={a => props.text(a)}
         maxLength={props.length}
         inputMode={props.type}
+        value={props.value}
       />
     </View>
   );

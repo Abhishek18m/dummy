@@ -9,6 +9,7 @@ import HomeScreen from '../Screens/HomeScreen';
 import Login from '../Screens/Login';
 import SignUp from '../Screens/SignUp';
 import ChatScreen from '../Screens/ChatScreen';
+import UserList from '../Screens/UserList';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,11 @@ function Navigator() {
         <Stack.Screen
           name="ChatScreen"
           component={ChatScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="UserList"
+          component={UserList}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

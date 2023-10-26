@@ -13,6 +13,7 @@ import {db} from '../Firebase/firebase-config';
 import CommonInput from '../Component/CommonInput';
 import InputPswrd from '../Component/InputPswrd';
 import CommonButton from '../Component/CommonButton';
+import StyleSheet from '../StyleSheet/StyleSheet';
 
 const SignUp = ({navigation}) => {
   const [user, setUser] = useState([]);
@@ -23,18 +24,6 @@ const SignUp = ({navigation}) => {
   const [pass, setPass] = useState('');
   const [num, setNum] = useState('');
   const [cPass, setCPass] = useState('');
-
-  useEffect(() => {
-    let arr = [];
-    onValue(ref(db, '/UserDetails'), querySnapShot => {
-      querySnapShot.forEach(item => {
-        let obj = item.val();
-        obj.id = item.key;
-        arr.push(obj);
-      });
-    });
-    setUser(arr);
-  }, []);
 
   const Validate = () => {
     if (name.length < 3) {
@@ -63,43 +52,47 @@ const SignUp = ({navigation}) => {
       Alert.alert('Please create strong password');
     } else if (cPass !== pass) {
       Alert.alert('Confirm password doesnt match with password');
-    } else if (user.some(el => el.email === email.toLowerCase()) === true) {
-      Alert.alert('Email already registered ');
     } else {
-      push(ref(db, '/UserDetails'), {
-        name: name,
-        email: email.toLowerCase(),
-        phone: num,
-        password: pass,
-      });
-      Alert.alert('Account created succesfully');
-      navigation.navigate('Login');
+      fetchUsers();
     }
   };
+  const fetchUsers = () => {
+    let arr = [];
+    onValue(ref(db, '/UserDetails'), querySnapShot => {
+      querySnapShot.forEach(item => {
+        let obj = item.val();
+        obj.id = item.key;
+        arr.push(obj);
+      });
+    });
 
+    if (arr.some(el => el.email === email.toLowerCase()) === true) {
+      Alert.alert('Email already registered ');
+    } else {
+      signup();
+    }
+  };
+  const signup = () => {
+    push(ref(db, '/UserDetails'), {
+      name: name,
+      email: email.toLowerCase(),
+      phone: num,
+      password: pass,
+    });
+    Alert.alert('Account created succesfully');
+    navigation.navigate('Login');
+  };
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'space-evenly',
-          marginHorizontal: 15,
-        }}>
+      <View style={StyleSheet.signUpView}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
             source={require('../Assets/Images/left.png')}
-            style={{height: 30, width: 30}}
+            style={StyleSheet.signUpIcon}
           />
         </TouchableOpacity>
-        <View
-          style={{
-            height: 450,
-            justifyContent: 'space-evenly',
-            //   backgroundColor: 'red',
-          }}>
-          <Text style={{fontSize: 30, textAlign: 'center', marginBottom: 10}}>
-            Create Account
-          </Text>
+        <View style={StyleSheet.signUpInputView}>
+          <Text style={StyleSheet.signUpCreateText}>Create Account</Text>
 
           <CommonInput
             img={require('../Assets/Images/user.png')}

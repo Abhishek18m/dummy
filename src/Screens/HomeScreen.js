@@ -6,19 +6,56 @@ import {
   TouchableOpacity,
   FlatList,
   TextInput,
+  RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
-import {ref} from 'firebase/database';
+import React, {useEffect, useRef, useState} from 'react';
+
 import AsyncStorage from '@react-native-community/async-storage';
 
+import {ref, onValue, push, update, remove} from 'firebase/database';
+import {db} from '../Firebase/firebase-config';
+
 const HomeScreen = ({navigation}) => {
+  const [data, setData] = useState([]);
   const [search, setSearch] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
+  const [user, setUser] = useState([]);
+  const [myuser, setMyUser] = useState('');
   const blurr = useRef();
-  const data = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
-  const renderItem = () => {
+
+  useEffect(() => {
+    getData();
+  }, []);
+  const getData = async () => {
+    let res = await AsyncStorage.getItem('userLogin');
+    parseData = JSON.parse(res);
+    fetchData(parseData);
+  };
+  const fetchData = data => {
+    let arr = [];
+    onValue(ref(db, `/ChatList/${data.id}`), querySnapShot => {
+      arr = [];
+      querySnapShot.forEach(item => {
+        let obj = item.val();
+        obj.id = item.key;
+        arr.push(obj);
+      });
+      setData(arr);
+      setRefreshing(false);
+      setMyUser(data);
+    });
+  };
+
+  const renderItem = ({item}) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('ChatScreen')}
+        onPress={() =>
+          navigation.navigate('ChatScreen', {
+            receiver_data: item,
+            sender_data: myuser,
+          })
+        }
         style={{
           flexDirection: 'row',
           // justifyContent: 'space-between',
@@ -39,13 +76,19 @@ const HomeScreen = ({navigation}) => {
           }}
         />
         <View style={{flex: 1}}>
-          <Text>Name</Text>
+          <Text>{item.name}</Text>
           <Text>Messages</Text>
         </View>
         <Text>Time</Text>
       </TouchableOpacity>
     );
   };
+
+  const onRefresh = () => {
+    setData([]);
+    getData();
+  };
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <View style={{paddingHorizontal: '3%'}}>
@@ -57,12 +100,17 @@ const HomeScreen = ({navigation}) => {
             paddingVertical: 15,
             paddingHorizontal: 10,
           }}>
-          <View style={{width: 45}}></View>
+          <TouchableOpacity onPress={() => navigation.navigate('UserList')}>
+            <Text>Users</Text>
+          </TouchableOpacity>
           <Text style={{fontWeight: 'bold', fontSize: 22}}>Messages</Text>
           <TouchableOpacity
             onPress={() => [
               AsyncStorage.setItem('status', 'false'),
-              navigation.navigate('Login'),
+              navigation.reset({
+                index: 0,
+                routes: [{name: 'Login'}],
+              }),
             ]}>
             <Text>Logout</Text>
           </TouchableOpacity>
@@ -109,10 +157,18 @@ const HomeScreen = ({navigation}) => {
           ) : null}
         </View>
       </View>
+      {refreshing ? <ActivityIndicator /> : null}
       <FlatList
         data={data}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            //refresh control used for the Pull to Refresh
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
       />
     </SafeAreaView>
   );
