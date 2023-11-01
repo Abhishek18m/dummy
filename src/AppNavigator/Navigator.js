@@ -10,6 +10,7 @@ import Login from '../Screens/Login';
 import SignUp from '../Screens/SignUp';
 import ChatScreen from '../Screens/ChatScreen';
 import UserList from '../Screens/UserList';
+import BottomTabs from './BottomTabs';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,11 @@ function Navigator() {
         <Stack.Screen
           name="UserList"
           component={UserList}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="BottomTabs"
+          component={BottomTabs}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

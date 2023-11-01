@@ -14,6 +14,7 @@ import CommonInput from '../Component/CommonInput';
 import InputPswrd from '../Component/InputPswrd';
 import CommonButton from '../Component/CommonButton';
 import StyleSheet from '../StyleSheet/StyleSheet';
+import Eneum from '../Element/Eneum/Eneum';
 
 const SignUp = ({navigation}) => {
   const [user, setUser] = useState([]);
@@ -28,30 +29,30 @@ const SignUp = ({navigation}) => {
   const Validate = () => {
     if (name.length < 3) {
       if (!name) {
-        Alert.alert('Please enter name');
+        Alert.alert(Eneum.EnterName);
       } else {
-        Alert.alert('Name must have more than 3 char');
+        Alert.alert(Eneum.MoreThan3Char);
       }
     } else if (!email) {
-      Alert.alert('Please fill email');
+      Alert.alert(Eneum.EnterEmail);
     } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      Alert.alert('Please enter a valid email');
+      Alert.alert(Eneum.ValidEmail);
     } else if (num.length < 10) {
       if (!num) {
-        Alert.alert('Please fill number');
+        Alert.alert(Eneum.FillNumber);
       } else {
-        Alert.alert('Number must have more than 10 digits');
+        Alert.alert(Eneum.Num10Digits);
       }
     } else if (!pass) {
-      Alert.alert('Please fill password');
+      Alert.alert(Eneum.FillPassword);
     } else if (
       !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/.test(
         pass,
       )
     ) {
-      Alert.alert('Please create strong password');
+      Alert.alert(Eneum.StrongPassword);
     } else if (cPass !== pass) {
-      Alert.alert('Confirm password doesnt match with password');
+      Alert.alert(Eneum.PasswordDoesntMatch);
     } else {
       fetchUsers();
     }
@@ -67,7 +68,7 @@ const SignUp = ({navigation}) => {
     });
 
     if (arr.some(el => el.email === email.toLowerCase()) === true) {
-      Alert.alert('Email already registered ');
+      Alert.alert(Eneum.EmailAlreadyReg);
     } else {
       signup();
     }
@@ -79,7 +80,7 @@ const SignUp = ({navigation}) => {
       phone: num,
       password: pass,
     });
-    Alert.alert('Account created succesfully');
+    Alert.alert(Eneum.CreatedSuccesfully);
     navigation.navigate('Login');
   };
   return (
@@ -92,28 +93,28 @@ const SignUp = ({navigation}) => {
           />
         </TouchableOpacity>
         <View style={StyleSheet.signUpInputView}>
-          <Text style={StyleSheet.signUpCreateText}>Create Account</Text>
+          <Text style={StyleSheet.signUpCreateText}>{Eneum.CreateAccount}</Text>
 
           <CommonInput
             img={require('../Assets/Images/user.png')}
-            title="Your Name"
+            title={Eneum.YourName}
             text={a => setName(a)}
           />
           <CommonInput
             img={require('../Assets/Images/mail.png')}
-            title="Email Address"
+            title={Eneum.EmailAddress}
             text={a => setEmail(a)}
           />
           <CommonInput
             img={require('../Assets/Images/phone.png')}
-            title="Phone Number"
+            title={Eneum.PhoneNumber}
             text={a => setNum(a)}
             length={10}
             type="numeric"
           />
           <InputPswrd
             img={require('../Assets/Images/padlock.png')}
-            title="Password"
+            title={Eneum.Password}
             img2={
               !security
                 ? require('../Assets/Images/witness.png')
@@ -125,7 +126,7 @@ const SignUp = ({navigation}) => {
           />
           <InputPswrd
             img={require('../Assets/Images/padlock.png')}
-            title="Confirm Password"
+            title={Eneum.ConfirmPassword}
             img2={
               !security2
                 ? require('../Assets/Images/witness.png')
@@ -137,63 +138,8 @@ const SignUp = ({navigation}) => {
           />
         </View>
 
-        {/* <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          }}>
-          <Text style={{fontSize: 32}}>Create</Text>
-          <TouchableOpacity
-            style={{
-              backgroundColor: 'blue',
-              width: 60,
-              height: 45,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 20,
-              margin: 5,
-            }}>
-            <Image
-              source={require('../Assets/Images/right.png')}
-              style={{height: 30, width: 30, tintColor: 'white'}}
-            />
-          </TouchableOpacity>
-        </View> */}
-        <CommonButton title="Create" click={() => Validate()} />
+        <CommonButton title={Eneum.Create} click={() => Validate()} />
         <View></View>
-        {/* <View>
-          <Text style={{textAlign: 'center'}}>
-            Or create account using social media
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginVertical: 10,
-              width: 200,
-              alignSelf: 'center',
-            }}>
-            <TouchableOpacity>
-              <Image
-                source={require('../Assets/Images/google.png')}
-                style={{height: 40, width: 40}}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Image
-                source={require('../Assets/Images/facebook.png')}
-                style={{height: 40, width: 40}}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Image
-                source={require('../Assets/Images/twitter.png')}
-                style={{height: 40, width: 40}}
-              />
-            </TouchableOpacity>
-          </View>
-        </View> */}
       </View>
     </SafeAreaView>
   );

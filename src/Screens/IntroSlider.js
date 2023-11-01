@@ -2,13 +2,14 @@ import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import AsyncStorage from '@react-native-community/async-storage';
+import Eneum from '../Element/Eneum/Eneum';
 
 const IntroSlider = ({navigation}) => {
   const slides = [
     {
       key: 's1',
-      text: 'Best Recharge offers',
-      title: 'Mobile Recharge',
+      text: Eneum.IntroText1,
+      title: Eneum.IntroTitle1,
       image: {
         uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_mobile_recharge.png',
       },
@@ -16,8 +17,8 @@ const IntroSlider = ({navigation}) => {
     },
     {
       key: 's2',
-      title: 'Flight Booking',
-      text: 'Upto 25% off on Domestic Flights',
+      title: Eneum.IntroText2,
+      text: Eneum.IntroTitle2,
       image: {
         uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_flight_ticket_booking.png',
       },
@@ -25,39 +26,12 @@ const IntroSlider = ({navigation}) => {
     },
     {
       key: 's3',
-      title: 'Great Offers',
-      text: 'Enjoy Great offers on our all services',
+      text: Eneum.IntroText3,
+      title: Eneum.IntroTitle3,
       image: {
         uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_discount.png',
       },
       backgroundColor: '#22bcb5',
-    },
-    {
-      key: 's4',
-      title: 'Best Deals',
-      text: ' Best Deals on all our services',
-      image: {
-        uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_best_deals.png',
-      },
-      backgroundColor: '#3395ff',
-    },
-    {
-      key: 's5',
-      title: 'Bus Booking',
-      text: 'Enjoy Travelling on Bus with flat 100% off',
-      image: {
-        uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_bus_ticket_booking.png',
-      },
-      backgroundColor: '#f6437b',
-    },
-    {
-      key: 's6',
-      title: 'Train Booking',
-      text: ' 10% off on first Train booking',
-      image: {
-        uri: 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_train_ticket_booking.png',
-      },
-      backgroundColor: '#febe29',
     },
   ];
 
@@ -81,6 +55,9 @@ const IntroSlider = ({navigation}) => {
   return (
     <AppIntroSlider
       data={slides}
+      skipLabel={Eneum.Skip}
+      nextLabel={Eneum.Next}
+      doneLabel={Eneum.Done}
       renderItem={renderItem}
       onDone={() => [
         AsyncStorage.setItem('introStatus', 'true'),

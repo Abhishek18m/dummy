@@ -38,7 +38,6 @@ const Firebase = () => {
 
   function clearTodos(e) {
     remove(ref(db, '/todos/' + e));
-    todosKeys.map(key => console.log(key));
   }
   const getData = () => {};
   const renderItem = ({item}) => {

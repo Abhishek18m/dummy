@@ -32,22 +32,23 @@ const Login = ({navigation}) => {
   const validate = () => {
     let res = user
       .filter(item => item.email == email.toLowerCase())
-      .map(({email, password, id, name}) => ({
+      .map(({email, password, id, name, phone}) => ({
         email,
         password,
         id,
         name,
+        phone,
       }));
 
     if (res.length == 0) {
-      Alert.alert("email doesn't exist");
+      Alert.alert(Eneum.EmaildoesntExist);
     } else {
       if (res[0].email == email.toLowerCase() && res[0].password == password) {
-        navigation.navigate('HomeScreen');
+        navigation.navigate('BottomTabs');
         AsyncStorage.setItem('status', 'true');
         AsyncStorage.setItem('userLogin', JSON.stringify(res[0]));
       } else {
-        Alert.alert('Password doesnt match');
+        Alert.alert(Eneum.PasswordDoesntMatch);
       }
     }
   };
@@ -57,19 +58,19 @@ const Login = ({navigation}) => {
       <View style={StyleSheet.loginMainView}>
         <View style={StyleSheet.loginHeaderView}>
           <Text style={StyleSheet.loginHeadText}>{Eneum.AppName}</Text>
-          <Text style={StyleSheet.loginHeadText2}>Sign in to your account</Text>
+          <Text style={StyleSheet.loginHeadText2}>{Eneum.SignInMsg}</Text>
         </View>
 
         <View style={StyleSheet.loginInputView}>
           <CommonInput
             img={require('../Assets/Images/mail.png')}
-            title="Email"
+            title={Eneum.Email}
             text={a => setEmail(a)}
           />
 
           <InputPswrd
             img={require('../Assets/Images/padlock.png')}
-            title="Password"
+            title={Eneum.Password}
             img2={
               !security
                 ? require('../Assets/Images/witness.png')
@@ -79,42 +80,14 @@ const Login = ({navigation}) => {
             Click={() => setSecurity(!security)}
             text={a => setPassword(a)}
           />
-          {/* <TouchableOpacity>
-            <Text style={{color: 'grey', textAlign: 'right'}}>
-              Forgot your password?
-            </Text>
-          </TouchableOpacity> */}
         </View>
 
-        {/* <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          }}>
-          <Text style={{fontSize: 32}}>Sign In</Text>
-          <TouchableOpacity
-            style={{
-              backgroundColor: 'blue',
-              width: 60,
-              height: 45,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 20,
-              margin: 5,
-            }}>
-            <Image
-              source={require('../Assets/Images/right.png')}
-              style={{height: 30, width: 30, tintColor: 'white'}}
-            />
-          </TouchableOpacity>
-        </View> */}
-        <CommonButton title="Sign In" click={() => validate()} />
+        <CommonButton title={Eneum.SignIn} click={() => validate()} />
 
         <View style={StyleSheet.loginCreateView}>
-          <Text>Don't have any account ?</Text>
+          <Text>{Eneum.DontHaveAcc}</Text>
           <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-            <Text style={{color: 'blue'}}>Create</Text>
+            <Text style={{color: 'blue'}}>{Eneum.Create}</Text>
           </TouchableOpacity>
         </View>
       </View>
