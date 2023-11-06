@@ -6,8 +6,11 @@ import StyleSheet from '../StyleSheet/StyleSheet';
 import * as Animatable from 'react-native-animatable';
 import color from '../Assets/Color/color';
 import Eneum from '../Element/Eneum/Eneum';
+import {useTheme} from '../AppNavigator/Navigator';
 
 const Splash = ({navigation}) => {
+  const {theme, getItem} = useTheme();
+
   useEffect(() => {
     setTimeout(() => {
       validate();
@@ -17,6 +20,14 @@ const Splash = ({navigation}) => {
   const validate = async () => {
     let status = await AsyncStorage.getItem('status');
     let introStatus = await AsyncStorage.getItem('introStatus');
+    let data = await AsyncStorage.getItem('theme');
+    let theme = JSON.parse(data);
+
+    {
+      theme
+        ? getItem(theme?.color, theme?.font, theme?.colorA, theme?.colorB)
+        : null;
+    }
 
     if (status == 'true') {
       navigation.replace('BottomTabs');
@@ -37,7 +48,7 @@ const Splash = ({navigation}) => {
           <Text style={StyleSheet.splashText}>{Eneum.AppName}</Text>
           <Image
             source={require('../Assets/Images/logo.png')}
-            style={{height: 30, width: 30, tintColor: color.primary}}
+            style={{height: 30, width: 30, tintColor: theme}}
           />
         </Animatable.View>
       </View>

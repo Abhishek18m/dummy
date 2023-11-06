@@ -13,16 +13,20 @@ import {ref, onValue} from 'firebase/database';
 import {db} from '../Firebase/firebase-config';
 import {useIsFocused} from '@react-navigation/native';
 
-import color from '../Assets/Color/color';
-// import StyleSheet from '../StyleSheet/StyleSheet';
 import ChatBox from '../Component/ChatBox';
 import SearchBar from '../Component/SearchBar';
 import TopBar from '../Component/TopBar';
 import Eneum from '../Element/Eneum/Eneum';
+import color from '../Assets/Color/color';
+
+// import {useTheme} from '../Assets/Theme/ThemeContext';
+import {useTheme} from '../AppNavigator/Navigator';
 
 const HomeScreen = ({navigation}) => {
+  const {theme, font} = useTheme();
+
   const [data, setData] = useState([]);
-  // const [search, setSearch] = useState(false);
+
   const [refreshing, setRefreshing] = useState(true);
   const [myuser, setMyUser] = useState('');
   const [filterData, setFilterData] = useState([]);
@@ -94,10 +98,10 @@ const HomeScreen = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: color.primary}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: theme}}>
       <TopBar title={Eneum.Msgs} />
 
-      <View style={{flex: 1, backgroundColor: color.secondary}}>
+      <View style={[{flex: 1, backgroundColor: color.secondary}]}>
         <SearchBar onChangeText={e => findUser(e)} />
 
         {refreshing ? <ActivityIndicator /> : null}
@@ -111,6 +115,8 @@ const HomeScreen = ({navigation}) => {
           }
         />
       </View>
+      {/* <Text>Current Theme: {theme}</Text>
+      <Button title="Toggle Theme" onPress={toggleTheme} /> */}
     </SafeAreaView>
   );
 };

@@ -11,7 +11,10 @@ import CommonButton from '../Component/CommonButton';
 import Eneum from '../Element/Eneum/Eneum';
 import StyleSheet from '../StyleSheet/StyleSheet';
 
+import {useTheme} from '../AppNavigator/Navigator';
+
 const Login = ({navigation}) => {
+  const {theme} = useTheme();
   const [security, setSecurity] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -57,7 +60,9 @@ const Login = ({navigation}) => {
     <SafeAreaView style={StyleSheet.loginSafeView}>
       <View style={StyleSheet.loginMainView}>
         <View style={StyleSheet.loginHeaderView}>
-          <Text style={StyleSheet.loginHeadText}>{Eneum.AppName}</Text>
+          <Text style={[StyleSheet.loginHeadText, {color: theme}]}>
+            {Eneum.AppName}
+          </Text>
           <Text style={StyleSheet.loginHeadText2}>{Eneum.SignInMsg}</Text>
         </View>
 
@@ -87,7 +92,7 @@ const Login = ({navigation}) => {
         <View style={StyleSheet.loginCreateView}>
           <Text>{Eneum.DontHaveAcc}</Text>
           <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-            <Text style={{color: 'blue'}}>{Eneum.Create}</Text>
+            <Text style={{color: theme}}>{Eneum.Create}</Text>
           </TouchableOpacity>
         </View>
       </View>

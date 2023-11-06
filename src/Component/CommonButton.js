@@ -1,7 +1,10 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 
+import {useTheme} from '../AppNavigator/Navigator';
+
 const CommonButton = props => {
+  const {theme} = useTheme();
   return (
     <TouchableOpacity onPress={props.click}>
       <View
@@ -11,7 +14,7 @@ const CommonButton = props => {
           alignSelf: 'center',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: 'blue',
+          backgroundColor: theme,
           borderRadius: 10,
 
           elevation: 3,

@@ -50,6 +50,7 @@ export default {
   Home: 'Home',
   Search: 'Search',
   EnterText: 'Please enter text',
+  Themes: 'Themes',
 };
 
 // export default {

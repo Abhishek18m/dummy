@@ -22,8 +22,11 @@ import {useIsFocused} from '@react-navigation/native';
 import TopBar from '../Component/TopBar';
 import SearchBar from '../Component/SearchBar';
 import Eneum from '../Element/Eneum/Eneum';
+// import {useTheme} from '../Assets/Theme/ThemeContext';
+import {useTheme} from '../AppNavigator/Navigator';
 
 const UserList = props => {
+  const {theme} = useTheme();
   const [data, setData] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [sender, setSender] = useState({});
@@ -108,7 +111,7 @@ const UserList = props => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: color.primary}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: theme}}>
       <TopBar title={Eneum.Users} />
       <View style={{flex: 1, backgroundColor: 'white'}}>
         <SearchBar onChangeText={e => findUser(e)} />

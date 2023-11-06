@@ -18,8 +18,11 @@ import color from '../Assets/Color/color';
 import TopBar from '../Component/TopBar';
 import StyleSheet from '../StyleSheet/StyleSheet';
 import Eneum from '../Element/Eneum/Eneum';
+// import {useTheme} from '../Assets/Theme/ThemeContext';
+import {useTheme} from '../AppNavigator/Navigator';
 
 const Profile = ({navigation}) => {
+  const {theme, colorA, colorB, font} = useTheme();
   const focus = useIsFocused();
 
   useEffect(() => {
@@ -82,43 +85,34 @@ const Profile = ({navigation}) => {
     {
       title: Eneum.YourAcc,
       source: require('../Assets/Images/account.png'),
-      tint: '#5579f1',
-      color: '#d6e9ff',
     },
     {
       title: Eneum.Notifications,
       source: require('../Assets/Images/notification.png'),
-      // color: '#ffffbf',
-      tint: '#5579f1',
-      color: '#d6e9ff',
     },
     {
       title: Eneum.TermsAndConditions,
       source: require('../Assets/Images/terms.png'),
-      // color: '#bfffbf',
-      // tint: '#008000',
-      tint: '#5579f1',
-      color: '#d6e9ff',
     },
     {
       title: Eneum.HelpAndSupport,
       source: require('../Assets/Images/support.png'),
-      // color: '#d6e9ff',
-      tint: '#5579f1',
-      color: '#d6e9ff',
+    },
+    {
+      title: Eneum.Themes,
+      source: require('../Assets/Images/theme.png'),
     },
     {
       title: Eneum.LogOut,
       source: require('../Assets/Images/logout.png'),
-      // color: '#ffbfbf',
-      tint: '#5579f1',
-      color: '#d6e9ff',
     },
   ];
 
   const Button = title => {
     if (title === Eneum.LogOut) {
       setShow(true);
+    } else if (title === Eneum.Themes) {
+      navigation.navigate('Theme');
     } else {
       null;
     }
@@ -129,8 +123,11 @@ const Profile = ({navigation}) => {
       <TouchableOpacity
         onPress={() => Button(item.title)}
         style={StyleSheet.profileBtn}>
-        <View style={StyleSheet.profileBtnView}>
-          <Image source={item.source} style={StyleSheet.profileBtnImg} />
+        <View style={[StyleSheet.profileBtnView, {backgroundColor: colorB}]}>
+          <Image
+            source={item.source}
+            style={[StyleSheet.profileBtnImg, {tintColor: theme}]}
+          />
         </View>
         <Text style={{fontSize: 18}}>{item.title}</Text>
       </TouchableOpacity>
@@ -149,9 +146,9 @@ const Profile = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: color.primary}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: theme}}>
       <TopBar title={Eneum.Profile} />
-      <View style={StyleSheet.profileView}>
+      <View style={[StyleSheet.profileView, {backgroundColor: colorB}]}>
         <View style={StyleSheet.profileImgView}>
           <Image
             source={require('../Assets/Images/user.png')}
@@ -169,27 +166,38 @@ const Profile = ({navigation}) => {
             />
           </TouchableOpacity>
         </View>
-        <Text style={{fontSize: 14, fontWeight: '300', alignSelf: 'center'}}>
+        <Text
+          style={{
+            fontSize: 14,
+            fontWeight: '300',
+            alignSelf: 'center',
+            // color: font,
+          }}>
           {myDetails?.email}
         </Text>
 
         <View style={StyleSheet.profileData}>
-          <View style={StyleSheet.profileDataView}>
+          <View style={[StyleSheet.profileDataView, {backgroundColor: colorA}]}>
             <Text>{Eneum.Users}</Text>
+
             <Text>{users?.length - 1}</Text>
           </View>
-          <View style={StyleSheet.profileDataView}>
+          <View style={[StyleSheet.profileDataView, {backgroundColor: colorA}]}>
             <Text>{Eneum.Friends}</Text>
             <Text>{conUsers.length}</Text>
           </View>
-          <View style={StyleSheet.profileDataView}>
+          <View style={[StyleSheet.profileDataView, {backgroundColor: colorA}]}>
             <Text>{Eneum.Blocked}</Text>
             <Text>{block.length}</Text>
           </View>
         </View>
 
         <View style={StyleSheet.profileMenu}>
-          <FlatList data={data} renderItem={renderItem} />
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            showsVerticalScrollIndicator={false}
+          />
         </View>
       </View>
       <Dialog

@@ -1,8 +1,9 @@
-import React, {createContext, useContext, useState} from 'react';
+import React from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Splash from '../Screens/Splash';
+import {ThemeProvider} from '../Assets/Theme/ThemeContext';
 
 import IntroSlider from '../Screens/IntroSlider';
 import HomeScreen from '../Screens/HomeScreen';
@@ -14,27 +15,10 @@ import BottomTabs from './BottomTabs';
 import Theme from '../Assets/Theme/Theme';
 
 const Stack = createNativeStackNavigator();
-const ThemeContext = createContext();
 
-export const useTheme = () => {
-  return useContext(ThemeContext);
-};
-
-export function Navigator() {
-  const [theme, setTheme] = useState('#5579f1');
-  const [font, setFont] = useState('black');
-  const [colorA, setColorA] = useState('#acd4ff');
-  const [colorB, setColorB] = useState('#d6e9ff');
-  const getItem = (theme, font, A, B) => {
-    setTheme(theme);
-    setFont(font);
-    setColorA(A);
-    setColorB(B);
-  };
-
+function Navigator() {
   return (
-    <ThemeContext.Provider
-      value={{theme, font, colorA, colorB, getItem: getItem}}>
+    <ThemeProvider>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
@@ -84,7 +68,7 @@ export function Navigator() {
           />
         </Stack.Navigator>
       </NavigationContainer>
-    </ThemeContext.Provider>
+    </ThemeProvider>
   );
 }
 

@@ -5,8 +5,10 @@ import UserList from '../Screens/UserList';
 import Profile from '../Screens/Profile';
 import {Image} from 'react-native-animatable';
 import Eneum from '../Element/Eneum/Eneum';
+import {useTheme} from './Navigator';
 
 const BottomTabs = () => {
+  const {theme} = useTheme();
   const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator
@@ -25,11 +27,12 @@ const BottomTabs = () => {
                 style={{
                   width: 20,
                   height: 20,
-                  tintColor: focused ? '#5579f1' : 'black',
+                  tintColor: focused ? theme : 'black',
                 }}
               />
             );
           },
+          tabBarActiveTintColor: theme,
         }}
       />
       <Tab.Screen
@@ -43,11 +46,12 @@ const BottomTabs = () => {
                 style={{
                   width: 20,
                   height: 20,
-                  tintColor: focused ? '#5579f1' : 'black',
+                  tintColor: focused ? theme : 'black',
                 }}
               />
             );
           },
+          tabBarActiveTintColor: theme,
         }}
       />
       <Tab.Screen
@@ -61,11 +65,12 @@ const BottomTabs = () => {
                 style={{
                   width: 20,
                   height: 20,
-                  tintColor: focused ? '#5579f1' : 'black',
+                  tintColor: focused ? theme : 'black',
                 }}
               />
             );
           },
+          tabBarActiveTintColor: theme,
         }}
       />
     </Tab.Navigator>

@@ -18,7 +18,7 @@ export default StyleSheet.create({
     height: '20%',
     alignItems: 'center',
   },
-  loginHeadText: {fontSize: 100, fontWeight: 'bold', color: 'blue'},
+  loginHeadText: {fontSize: 100, fontWeight: 'bold'},
   loginHeadText2: {fontSize: 22},
   loginInputView: {
     height: 170,
@@ -71,7 +71,6 @@ export default StyleSheet.create({
     flex: 1,
     // textAlign: 'center',
     paddingRight: 50,
-    color: 'white',
   },
 
   // -- HOME SCREEN --
@@ -111,9 +110,10 @@ export default StyleSheet.create({
   // -- Profile --
   profileBtn: {
     flexDirection: 'row',
-    height: 72,
+    height: 62,
     backgroundColor: 'white',
     alignItems: 'center',
+
     paddingHorizontal: 15,
 
     shadowColor: '#000',
@@ -137,7 +137,7 @@ export default StyleSheet.create({
   },
 
   profileBtnView: {
-    backgroundColor: '#d6e9ff',
+    // backgroundColor: '#d6e9ff',
     padding: 5,
     borderRadius: 5,
     marginRight: 20,
@@ -145,12 +145,12 @@ export default StyleSheet.create({
   profileBtnImg: {
     height: 25,
     width: 25,
-    tintColor: '#5579f1',
+    // tintColor: '#5579f1',
   },
   profileView: {
     flex: 1,
     // backgroundColor: '#eeeee4',
-    backgroundColor: '#d6e9ff',
+    // backgroundColor: '#d6e9ff',
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
   },
@@ -180,7 +180,7 @@ export default StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   profileDataView: {
-    backgroundColor: '#acd4ff',
+    // backgroundColor: '#acd4ff',
     flex: 0.3,
     borderRadius: 10,
     justifyContent: 'center',
