@@ -8,7 +8,7 @@ import Eneum from '../Element/Eneum/Eneum';
 import {useTheme} from './Navigator';
 
 const BottomTabs = () => {
-  const {theme} = useTheme();
+  const {theme, colorA} = useTheme();
   const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator
@@ -27,7 +27,7 @@ const BottomTabs = () => {
                 style={{
                   width: 20,
                   height: 20,
-                  tintColor: focused ? theme : 'black',
+                  tintColor: focused ? theme : colorA,
                 }}
               />
             );
@@ -46,7 +46,7 @@ const BottomTabs = () => {
                 style={{
                   width: 20,
                   height: 20,
-                  tintColor: focused ? theme : 'black',
+                  tintColor: focused ? theme : colorA,
                 }}
               />
             );
@@ -65,7 +65,7 @@ const BottomTabs = () => {
                 style={{
                   width: 20,
                   height: 20,
-                  tintColor: focused ? theme : 'black',
+                  tintColor: focused ? theme : colorA,
                 }}
               />
             );

@@ -56,7 +56,7 @@ const Theme = ({navigation}) => {
     },
     {
       color: color.primary4,
-      font: color.font2,
+      font: color.font1,
       name: 'Option 4',
       colorA: color.primary4A,
       colorB: color.primary4B,

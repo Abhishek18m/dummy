@@ -9,7 +9,7 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useIsFocused, useRoute} from '@react-navigation/native';
 import {ref, onValue, push, update, set, remove} from 'firebase/database';
 import {db} from '../Firebase/firebase-config';
@@ -27,6 +27,8 @@ const ChatScreen = props => {
   let style = StyleSheet;
   const route = useRoute();
 
+  const flatListRef = useRef();
+
   const [messages, setMessages] = useState('');
   const [displayMsg, setDisplayMsg] = useState([]);
   const [seen, setSeen] = useState(false);
@@ -34,7 +36,7 @@ const ChatScreen = props => {
   const [blockedMe, setBlockedMe] = useState(false);
   const [keyboard, setKeyboard] = useState(true);
 
-  const isFocused = useIsFocused();
+  const focus = useIsFocused();
 
   let sender = route?.params?.sender_data;
   let receiver = route?.params?.receiver_data;
@@ -42,7 +44,15 @@ const ChatScreen = props => {
   useEffect(() => {
     fetchData();
     validateBlock();
-  }, []);
+  }, [focus]);
+
+  useEffect(() => {
+    if (displayMsg.length > 0) {
+      setTimeout(() => {
+        flatListRef.current.scrollToEnd({animated: true});
+      }, 1000);
+    }
+  }, [displayMsg]);
 
   const validateBlock = () => {
     let arr1 = [];
@@ -191,10 +201,15 @@ const ChatScreen = props => {
   const UnBlock = () => {
     remove(ref(db, `/BlockList/${sender.id}/${sender.id}_${receiver.id}`));
   };
+  const getItemLayout = (data, index) => ({
+    length: 100, // Adjust this value based on your item height
+    offset: 100 * index,
+    index,
+  });
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: theme}}>
-      <View style={{flex: 1}}>
+      <View style={{flex: 1}} fo>
         <View style={style.chatTopView}>
           <TouchableOpacity onPress={() => props.navigation.goBack()}>
             <Image
@@ -228,7 +243,16 @@ const ChatScreen = props => {
             paddingHorizontal: 10,
             paddingBottom: 5,
           }}>
-          <FlatList data={displayMsg} renderItem={renderItem} />
+          <FlatList
+            data={displayMsg}
+            renderItem={renderItem}
+            ref={flatListRef}
+            showsVerticalScrollIndicator={false}
+            initialScrollIndex={
+              displayMsg.length !== 0 ? displayMsg.length - 1 : 0
+            }
+            getItemLayout={getItemLayout}
+          />
           {!block ? (
             <View
               style={{
